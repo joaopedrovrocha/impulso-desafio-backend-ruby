@@ -1,0 +1,46 @@
+<div class="row pb-4">
+  <% if @transactions.empty? %>
+    <p class="mt-4">Nenhum arquivo carregado. <%= link_to 'Clique aqui', index_path %> para fazer o upload.</p>
+  <% end %>
+  <% @transactions.each do |store, store_transactions| %>
+    <div class="col-12 mt-4">
+      <div class="card">
+        <div class="card-header">
+          <h4><%= store %></h4>
+        </div>
+        <div class="card-body">
+          <table class="table table-hover">
+            <tbody>
+              <% total = 0 %>
+              <% store_transactions.each do |transaction| %>
+                <%
+                  transaction_type = Transaction::TRANSACTION_TYPES.filter{ |el| el[:param] == transaction.transaction_type }.first
+
+                  value_txt = "#{transaction_type[:signal]} #{transaction.value}"
+
+                  total += transaction.value if transaction_type[:signal] == '+'
+                  total -= transaction.value if transaction_type[:signal] == '-'
+
+                  klass = transaction_type[:signal] == '-' ? 'table-danger' : 'table-success'
+                %>
+                <tr class="<%= klass %>">
+                  <td width="20%"><%= datetime_to_ptbr transaction.transaction_date, transaction.transaction_time %></td>
+                  <td width="20%"><%= transaction_type[:label] %></td>
+                  <td width="20%"><%= transaction.responsible_name %></td>
+                  <td width="20%"><%= transaction.card %></td>
+                  <td width="20%"><%= value_txt %></td>
+                </tr>
+              <% end %>
+            </tbody>
+            <tfoot>
+              <tr>
+                <td width="80%" colspan="4" class="text-right">Total:</td>
+                <td width="20%"><b><%= total %></b></td>
+              </tr>
+            </tfoot>
+          </table>
+        </div>
+      </div>
+    </div>
+  <% end %>
+</div>

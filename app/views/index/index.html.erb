@@ -1,0 +1,12 @@
+<div class="row justify-content-md-center">
+  <div class="col-5 mt-4 mb-4">
+    <%= form_tag :cnab_upload, multipart: true do %>
+      <div class="form-group mt-2">
+        <label for="file">Arquivo (CNAB)</label>
+        <input type="file" class="form-control" id="file" name="file" />
+      </div>
+
+      <%= submit_tag 'Processar Arquivo', class: 'btn btn-primary mt-2' %>
+    <% end %>
+  </div>
+</div>

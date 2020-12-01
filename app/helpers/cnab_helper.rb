@@ -1,0 +1,2 @@
+module CnabHelper
+end
